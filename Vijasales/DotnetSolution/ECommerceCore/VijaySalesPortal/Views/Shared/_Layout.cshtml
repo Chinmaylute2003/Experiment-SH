@@ -1,0 +1,96 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Test</title>
+
+
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+
+
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+
+
+    <!-- <link rel="stylesheet" href="~/css/Test.styles.css" asp-append-version="true" />-->
+</head>
+<body>
+    <header>
+
+        <nav class="navbar navbar-expand-sm navbar-light bg-primary border-bottom box-shadow">
+            <div class="container-fluid">
+
+                <a class="navbar-brand text-white" asp-area="" asp-controller="Home" asp-action="Index">Vijay Sales</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="d-flex justify-content-between">
+                    <ul class="nav justify-content-end">
+                        <li class="nav-item">
+                            <a class="nav-link text-white" asp-area="" asp-controller="Products" asp-action="Index">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-white" asp-area="" asp-controller="Auth" asp-action="login">Signin</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-white" asp-area="" asp-controller="Home" asp-action="about-us">About Us</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-white" asp-area="" asp-controller="Auth" asp-action="register">Register</a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link text-white" asp-area="" asp-controller="Home" asp-action="Dashboard">Account</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-white" asp-area="" asp-controller="ShoppingCart" asp-action="GetCart">Shopping Cart</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <div class="container-fluid m-0">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+
+    <footer class="border-top footer text-white bg-primary">
+        <div class="container">
+            &copy; 2024 - Test - <a class="text-white" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+        </div>
+    </footer>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/js/bootstrap.bundle.js" type="text/javascript"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script>
+        let token = localStorage.getItem("token");
+
+        $.ajax({
+            url: "http://localhost:5218/api/users/getProfile",
+            type: "GET",
+            headers: {
+                'contentType': "application/json",
+                'Authorization': `Bearer ${token}`
+            },
+            success: (res) => {
+                // Check if the role is 'Vendor'
+                if (res.role === "Vendor") {
+                    // Select and remove specific navbar items
+                    document.querySelector(".nav-link[href='/Auth/login']").parentElement.remove();  // Remove Signin
+                    document.querySelector(".nav-link[href='/Auth/register']").parentElement.remove(); // Remove Register
+                    document.querySelector(".nav-link[href='/ShoppingCart/GetCart']").parentElement.remove(); // Remove Shopping Cart
+                }
+            },
+        });
+
+    </script>
+
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>
