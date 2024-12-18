@@ -25,12 +25,7 @@ namespace VijaySalesAPI.Controllers
             List<User> users = await _userService.GetAllAsync();
             return users;
         }
-        [HttpGet("{id}")]
-        public async Task<ActionResult<User>> Get(int id)
-        {
-            User user = await _userService.GetUserAsync(id);
-            return user;
-        }
+
        
         [HttpGet("getProfile")]
         public async Task <ActionResult> GetUser()
