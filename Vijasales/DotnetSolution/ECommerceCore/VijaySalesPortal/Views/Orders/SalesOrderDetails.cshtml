@@ -38,6 +38,17 @@
 <script>
     let allOrders = [];  
     function createOrderRow(order, customerName) {
+        let statusClass = '';
+
+        if (order.status === 'Pending') {
+            statusClass = 'text-primary';
+        } else if (order.status === 'Completed') {
+            statusClass = 'text-success';
+        } else if (order.status === 'Cancelled') {
+            statusClass = 'text-danger';
+        }
+
+
         return `
                 <tr id="order-${order.id}" class="order-row" data-order-id="${order.id}">
                     <td>${order.id}</td>
@@ -45,11 +56,7 @@
                     <td>$${order.totalAmount.toFixed(2)}</td>
                     <td>${new Date(order.orderDate).toLocaleDateString()}</td>
                     <td>
-                        <select class="form-select status-dropdown" id="status${order.id}" onchange="changeStatus(${order.id}, new Date('${order.orderDate}'), ${order.customerId}, ${order.totalAmount})">
-                            <option value="Pending" ${order.status === 'Pending' ? 'selected' : ''}>Pending</option>
-                            <option value="Completed" ${order.status === 'Completed' ? 'selected' : ''}>Completed</option>
-                            <option value="Cancelled" ${order.status === 'Cancelled' ? 'selected' : ''}>Cancelled</option>
-                        </select>
+                            <p class="${statusClass}">${order.status}</p>
                     </td>
                     <td>
                         <button class="btn btn-info btn-sm view-details-btn" onclick="OnDetailsClick(${order.id})">View More Details</button>
@@ -114,32 +121,6 @@
             }
         });
     }
-
-    
-    function changeStatus(orderId, orderDate, customerId, totalAmount) {
-        const status = $('#status' + orderId).val();
-        const context = {
-            Id: orderId,
-            CustomerId: customerId,
-            Status: status,
-            OrderDate: orderDate,
-            TotalAmount: totalAmount
-        };
-
-        $.ajax({
-            url: `http://localhost:5218/api/Orders/${orderId}`,
-            type: 'PUT',
-            contentType: 'application/json',
-            data: JSON.stringify(context),
-            success: function () {
-                alert(`Order #${orderId} status updated to ${status}`);
-            },
-            error: function () {
-                alert('Failed to update order status');
-            }
-        });
-    }
-
     
     function OnDetailsClick(orderId) {
         window.location.href = `/Orders/SalesViewDetails?orderId=${orderId}`;
