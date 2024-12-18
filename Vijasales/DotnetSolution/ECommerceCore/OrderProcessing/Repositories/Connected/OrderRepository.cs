@@ -347,6 +347,34 @@ namespace OrderProcessing.Repositories.Connected
         {
             return false;
         }
-       
+
+        public async Task<List<OrderSummary>> GetOrderSummaryListAsync()
+        {
+            SqlConnection conn = new SqlConnection(conString);
+            List<OrderSummary> result = new List<OrderSummary>();
+            SqlCommand cmd = new SqlCommand("VsOrderAnalysis",conn);
+            cmd.CommandType= CommandType.StoredProcedure;
+            try
+            {
+                await conn.OpenAsync();
+                using(SqlDataReader reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        var orderSummary = new OrderSummary();
+                        string status = reader["Status"].ToString();
+                        string category = reader["Category"].ToString();
+                        int count = int.Parse(reader["count"].ToString());
+                        orderSummary.Status = status;
+                        orderSummary.Category = category;
+                        orderSummary.Count = count;
+                        result.Add(orderSummary);
+                    }
+                }
+            }catch (Exception ex) { Console.WriteLine(ex.Message); }
+            finally { await conn.CloseAsync(); }
+
+            return result;
+        }
     }
 }

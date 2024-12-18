@@ -1,5 +1,6 @@
 ﻿using OrderProcessing.Entities;
 using OrderProcessing.Repositories.Connected;
+using OrderProcessing.Responses;
 using ShoppingCart.Entities;
 
 namespace OrderProcessing.Services.Connected
@@ -60,6 +61,9 @@ namespace OrderProcessing.Services.Connected
             return await _svc.GetOrderDetailsAsync(customerId);
         }
 
-       
+        public async Task<List<OrderSummary>> GetOrderSummaryListAsync()
+        {
+            return await _svc.GetOrderSummaryListAsync();
+        }
     }
 }

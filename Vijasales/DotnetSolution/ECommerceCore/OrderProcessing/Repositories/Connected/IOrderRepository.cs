@@ -1,4 +1,5 @@
 ﻿using OrderProcessing.Entities;
+using OrderProcessing.Responses;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,6 +17,7 @@ namespace OrderProcessing.Repositories.Connected
         Task<bool> UpdateAsync(Order order);      
         Task<bool> DeleteAsync(int id);
         Task<List<OrderList>> GetOrderDetailsAsync(int customerId);
+        Task<List<OrderSummary>> GetOrderSummaryListAsync();
 
         
     }

@@ -7,6 +7,7 @@ using OrderProcessing.Services.Connected;
 using ShoppingCart.Entities;
 using OrderProcessing.Requests;
 using Microsoft.AspNetCore.Authorization;
+using OrderProcessing.Responses;
 
 namespace VijaySalesAPI.Controllers
 {
@@ -73,6 +74,13 @@ namespace VijaySalesAPI.Controllers
         public async Task<List<OrderList>> GetCustomerPastOrders(int customerId)
         {
             List<OrderList> orders = await _orderService.GetCustomerOrdersAsync(customerId);
+            return orders;
+        }
+        [Authorize]
+        [HttpGet("Analysis/")]
+        public async Task<List<OrderSummary>> GetOrderSummary()
+        {
+            List<OrderSummary> orders = await _orderService.GetOrderSummaryListAsync();
             return orders;
         }
     }

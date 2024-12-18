@@ -72,6 +72,16 @@ namespace VijaySalesAPI.Controllers
             }
             return Ok(updatedUser);
         }
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var success = await _userService.DeleteAsync(id);
+            if (!success)
+            {
+                return NotFound();
+            }
+            return NoContent();
+        }
 
 
     }
