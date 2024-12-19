@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json.Linq;
+using OrderProcessing.Services.Connected;
 using PaymentProcessing.Entities;
 using Shipment.Entities;
 using Shipment.Repositories;
@@ -15,10 +16,12 @@ namespace VijaySalesAPI.Controllers
     public class ShipmentsController : Controller
     {
         private readonly IShipmentService _shipmentService;
+        private readonly HttpClient _httpClient;
 
-        public ShipmentsController(IShipmentService shipmentService)
+        public ShipmentsController(IShipmentService shipmentService, HttpClient httpClient)
         {
             _shipmentService = shipmentService;
+            _httpClient = httpClient;
         }
 
         [HttpGet("status/{Status}")]
@@ -118,6 +121,9 @@ namespace VijaySalesAPI.Controllers
         [HttpPut("updateStatus/{id:int}")]
         public async Task<IActionResult> UpdateStatus(int id, [FromBody] string status)
         {
+            // todo - based on status update the status of order
+            
+
             if (await _shipmentService.UpdateShipmentStatusAsync(id, status))
             {
                 return Ok("Update success");
