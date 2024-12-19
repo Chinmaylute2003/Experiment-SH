@@ -1,4 +1,5 @@
 ﻿using OrderProcessing.Entities;
+using OrderProcessing.Responses;
 using ShoppingCart.Entities;
 namespace OrderProcessing.Services.Connected
 {
@@ -11,8 +12,9 @@ namespace OrderProcessing.Services.Connected
         Task<bool> UpdateOrderAsync(Order order);       
         Task<bool> DeleteAsync(int id);
         Task<List<OrderList>> GetOrderDetailsAsync(int customerId);
+        Task<List<OrderSummary>> GetOrderSummaryListAsync();
 
-        
+
     }
 
 }
