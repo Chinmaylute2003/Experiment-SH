@@ -17,7 +17,7 @@ namespace VijaySalesPortal.Controllers
         {
             return View();
         }
-        public IActionResult NewDashBoard()
+        public IActionResult SalesDashBoard()
         {
             return View();
         }

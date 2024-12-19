@@ -1,0 +1,288 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+<style>
+    .sidebar {
+        height: 100vh;
+        width: 300px;
+        position: fixed;
+        top: 0;
+        left: 0;
+        background-color: #007bff; /* Blue Background */
+        color: white;
+        padding-top: 20px;
+        transition: transform 0.3s ease-in-out;
+    }
+
+        .sidebar .nav-item {
+            padding: 10px 15px;
+        }
+
+            /* Hover Effect on Sidebar Items */
+            .sidebar .nav-item:hover {
+                background-color: #0056b2; /* Darker blue */
+            }
+
+        .sidebar .nav-link {
+            color: #f8f9fa; /* Light gray text */
+        }
+
+            .sidebar .nav-link:hover {
+                color: white;
+            }
+
+        /* Active menu item style */
+        .sidebar .nav-item.active > .nav-link {
+            background-color: #0056b3;
+        }
+
+    /* Content Styling */
+    .content {
+        margin-left: 270px;
+        padding: 40px;
+        transition: margin-left 0.3s ease-in-out;
+        background-color: #f8f9fa; /* White background for content */
+        color: #343a40; /* Dark text color */
+    }
+
+    .table, .card-body {
+        background-color: #ffffff; /* White background */
+        color: #343a40; /* Dark text color */
+    }
+
+    /* Stats Section */
+    .stats-card {
+        background-color: black;
+        color: white;
+        padding: 20px;
+        margin-bottom: 20px;
+        border-radius: 8px;
+        display: flex;
+        flex: 1;
+        border: 2px solid white;
+        flex-direction: column;
+    }
+
+        .stats-card .stats-title {
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+
+        .stats-card .stats-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #28a745; /* Green for stats value */
+        }
+
+    .stats-value {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .stats-card .stats-value span {
+        font-size: 1.2rem;
+        color: #adb5bd;
+    }
+
+    .customer-table {
+        margin-top: 20px;
+    }
+
+    .nav-link {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .navbar {
+        display: none;
+    }
+
+    /* Badge for status */
+    .badge-warning {
+        background-color: #ffcc00; /* Yellow for Pending */
+        color: black;
+    }
+
+    .badge-success {
+        background-color: #28a745; /* Green for Completed */
+        color: white;
+    }
+</style>
+
+<!-- Sidebar -->
+<div class="sidebar shadow">
+<h2 class="mx-4 mb-4">Hi <span class="text-white fw-bolder">John,</span></h2>
+    <ul class="nav flex-column">
+        <!-- Orders Section -->
+        <li class="nav-item">
+            <a class="nav-link" href="#" id="ordersLink">
+                <i class="fas fa-box"></i> Orders
+            </a>
+        </li>
+
+        <!-- Customers Section -->
+        <li class="nav-item">
+            <a class="nav-link" href="#" id="customersLink">
+                <i class="fas fa-users"></i> Customers
+            </a>
+        </li>
+
+        <!-- Authentication Section -->
+
+    </ul>
+</div>
+
+<!-- Content Area -->
+<div class="content" style="height: 100vh;">
+    <!-- Orders View (Default View) -->
+    <div id="ordersView" ">
+        <h1 class="mb-5">Orders</h1>
+
+        <!-- Orders Table -->
+        <div class="card">
+            <div class="card-header">
+                <h4>Order Details</h4>
+            </div>
+            <div class="card-body">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Order ID</th>
+                            <th>Date</th>
+                            <th>Customer</th>
+                            <th>Status</th>
+                            <th>Amount</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>#001</td>
+                            <td>2024-12-15</td>
+                            <td>John Doe</td>
+                            <td><span class="badge badge-warning text-warning">Pending</span></td>
+                            <td>$250.00</td>
+                            <td>
+                                <button class="btn btn-info btn-sm"><i class="fas fa-eye"></i> View</button>
+                                <button class="btn btn-secondary btn-sm"><i class="fas fa-edit"></i> Edit</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>#002</td>
+                            <td>2024-12-10</td>
+                            <td>Jane Smith</td>
+                            <td><span class="badge badge-success">Completed</span></td>
+                            <td>$500.00</td>
+                            <td>
+                                <button class="btn btn-info btn-sm"><i class="fas fa-eye"></i> View</button>
+                                <button class="btn btn-secondary btn-sm"><i class="fas fa-edit"></i> Edit</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Customer View (Initially hidden) -->
+    <div id="customersView" style="display:none;">
+        <h1 class="mb-4">Customer</h1>
+
+        <!-- Customer Sales Stats -->
+        <div class="row">
+            <div class="col-md-4" id="customer-card">
+                <div class="stats-card shadow">
+                    <div class="stats-title">Total Sales</div>
+                    <div class="stats-value">$10,500 <span>Last 30 Days</span></div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="stats-card shadow">
+                    <div class="stats-title">Total Orders</div>
+                    <div class="stats-value">350 <span>Last 30 Days</span></div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="stats-card shadow">
+                    <div class="stats-title">New Customers</div>
+                    <div class="stats-value">25 <span>Last 30 Days</span></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Customer List -->
+        <div class="card customer-table">
+            <div class="card-header">
+                <h4>Customer List</h4>
+            </div>
+            <div class="card-body">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Customer ID</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Orders</th>
+                            <th>Total Sales</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>#001</td>
+                            <td>John Doe</td>
+                            <td>johndoe@example.com</td>
+                            <td>15</td>
+                            <td>$2,500</td>
+                        </tr>
+                        <tr>
+                            <td>#002</td>
+                            <td>Jane Smith</td>
+                            <td>janesmith@example.com</td>
+                            <td>20</td>
+                            <td>$3,500</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Authentication View (Initially hidden) -->
+    <div id="authenticationView" style="display:none;">
+        <h1>Authentication</h1>
+        <p>Authentication-related content goes here.</p>
+    </div>
+</div>
+
+<!-- Bootstrap JS and dependencies -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<script src="https://kit.fontawesome.com/a076d05399.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/js/all.min.js" integrity="sha512-b+nQTCdtTBIRIbraqNEwsjB6UvL3UEMkXnhzd8awtCYh0Kcsjl9uEgwVFVbhoj3uu1DO1ZMacNvLoyJJiNfcvg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script>
+    
+    // Function to toggle views based on sidebar click
+    document.getElementById('ordersLink').addEventListener('click', function () {
+        document.getElementById('ordersView').style.display = 'block';
+        document.getElementById('customersView').style.display = 'none';
+        document.getElementById('authenticationView').style.display = 'none';
+    });
+
+    document.getElementById('customersLink').addEventListener('click', function () {
+        document.getElementById('ordersView').style.display = 'none';
+        document.getElementById('customersView').style.display = 'block';
+        document.getElementById('authenticationView').style.display = 'none';
+    });
+
+    document.getElementById('authLink').addEventListener('click', function () {
+        document.getElementById('ordersView').style.display = 'none';
+        document.getElementById('customersView').style.display = 'none';
+        document.getElementById('authenticationView').style.display = 'block';
+    });
+
+</script>

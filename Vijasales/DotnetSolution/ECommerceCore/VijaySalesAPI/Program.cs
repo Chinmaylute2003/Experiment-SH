@@ -1,7 +1,8 @@
 using Catalog.Repositories;
 using Catalog.Repositories.ORM;
 using Catalog.Services;
-using CRM.Repositories.ORM;
+using Catalog.Repositories.Review.Connected;
+ using CRM.Repositories.ORM;
 using CRM.Repositories;
 using CRM.Services;
 using PaymentProcessing.Services;
@@ -19,6 +20,7 @@ using Microsoft.IdentityModel.Tokens;
 using VijaySalesAPI.Helper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 
+using Catalog.Services.Review;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -64,6 +66,8 @@ builder.Services.AddTransient<IUserService, UserService>();
 
 builder.Services.AddTransient<IProductRepository, ProductRepository>();
 builder.Services.AddTransient<IProductService, ProductService>();
+builder.Services.AddTransient<IReviewsRepository, ReviewRepository>();
+builder.Services.AddTransient<IReviewService, ReviewService>();
 
 builder.Services.AddTransient<IOrderRepository, OrderRepository>();
 builder.Services.AddTransient<IOrderItemRepository, OrderItemRepository>();
