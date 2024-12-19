@@ -59,14 +59,15 @@
 </div>
 
 <script>
-    let apiUrl = 'http://localhost:5218/api/shipments';
+    let shipmentsUrl = 'http://localhost:5218/api/shipments';
+    let ordersUrl = 'http://localhost:5218/api/orders';
 
     const PopulateShipmentDetails = (shipmentId) => {
-        console.log(`${apiUrl}/${shipmentId}`)
+        console.log(`${shipmentsUrl}/${shipmentId}`)
 
         // Call the API to fetch shipment details
         $.ajax({
-            url: `${apiUrl}/${shipmentId}`,
+            url: `${shipmentsUrl}/${shipmentId}`,
             type: 'GET',
             success: function (response) {
                 console.log("Shipment data:", response);
@@ -79,7 +80,6 @@
                 $('#deliverydate').append(new Date(response.deliveryDate).toLocaleDateString()); // Format the date
 
                 const status = response.deliveryStatus;
-                console.log(status);
                 if (status) {
                     $(`#${status}`).prop('checked', true);
                 }
@@ -93,10 +93,54 @@
 
     const UpdateStatus = (shipmentId) => {
         // Get the selected delivery status
+        console.log("update clicked")
         const status = $("input[name='DeliveryStatus']:checked").val();
+        const order_id = $("#orderid").text().slice(-2);
 
+        // getting order details for the order id
         $.ajax({
-            url: `${apiUrl}/updatestatus/${shipmentId}`,
+            url: `${ordersUrl}/${order_id}`,
+            type: 'GET',
+            contentType: 'application/json',
+            success: function (response) {
+                console.log(response);
+            },
+            error: function (xhr, status, error) {
+                alert('Error updating shipment status. Please try again.');
+            }
+        });
+
+        
+
+        if (status == 'Cancelled') {
+            // handle updating order
+        }
+        else if (status == 'Delivered') {
+            // handle updating order
+        }
+        else{
+
+        }
+
+
+        // put request for updating the order status
+        $.ajax({
+            url: `${shipmentsUrl}/updatestatus/${shipmentId}`,
+            type: 'PUT',
+            contentType: 'application/json', // Ensure the server knows you're sending JSON
+            data: JSON.stringify(status), // Send the status as a plain string in the body
+            success: function (response) {
+                alert('Shipment status updated successfully.');
+            },
+            error: function (xhr, status, error) {
+                alert('Error updating shipment status. Please try again.');
+            }
+        });
+
+
+        // handling updating the shipment status
+        $.ajax({
+            url: `${shipmentsUrl}/updatestatus/${shipmentId}`,
             type: 'PUT',
             contentType: 'application/json', // Ensure the server knows you're sending JSON
             data: JSON.stringify(status), // Send the status as a plain string in the body
@@ -112,10 +156,13 @@
     $(document).ready(() => {
         const shipmentId = window.location.pathname.split('/').pop(); // e.g. /shipments/details/3 -> 3
 
+        // get order id
+        const orderIdText = $("#orderid").text();
+        console.log(shipmentId, orderIdText);
+
         PopulateShipmentDetails(shipmentId);
 
         $('#btn-update-status').click(() => {
-            console.log("update clicked")
             UpdateStatus(shipmentId);
         })
     })

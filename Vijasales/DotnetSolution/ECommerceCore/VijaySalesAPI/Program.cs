@@ -128,6 +128,7 @@ builder.Services.AddAuthentication(x =>
 
 });
 
+builder.Services.AddHttpClient();
 
 var app = builder.Build();
 
